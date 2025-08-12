@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { PersonalDetails, ATSScore } from '@/types/resume';
+import { PersonalDetails, ATSScore, ResumeData } from '@/types/resume';
 import { pipeline } from '@huggingface/transformers';
 
 // For demo purposes, using a placeholder API key
@@ -12,29 +12,48 @@ export const initializeGemini = (apiKey: string) => {
   genAI = new GoogleGenerativeAI(apiKey);
 };
 
-export const generateExecutiveSummary = async (personalDetails: PersonalDetails): Promise<string> => {
+export const generateExecutiveSummary = async (resumeData: ResumeData): Promise<string> => {
   if (!genAI) {
     throw new Error('Gemini AI not initialized. Please provide an API key.');
   }
 
   const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-  const prompt = `Generate a professional executive summary for a ${personalDetails.experienceLevel} level ${personalDetails.jobTitle}. 
-  
-  Details:
-  - Name: ${personalDetails.name}
-  - Job Title: ${personalDetails.jobTitle}
-  - Experience Level: ${personalDetails.experienceLevel}
-  
-  The summary should be 2-3 sentences, highlighting key strengths and career objectives appropriate for their experience level. Make it compelling and ATS-friendly.`;
+  const skillsList = resumeData.skills?.map((skill: any) => `${skill.name} (${skill.level})`).join(', ') || 'No skills listed';
+  const achievementsList = resumeData.achievements?.map((achievement: any) => achievement.title).join(', ') || 'No achievements listed';
+  const languagesList = resumeData.languages?.map((lang: any) => `${lang.name} (${lang.proficiency})`).join(', ') || 'No languages listed';
+
+  const prompt = `Generate a compelling professional executive summary for a resume based on the following information:
+
+Personal Details:
+- Name: ${resumeData.personalDetails.name}
+- Job Title: ${resumeData.personalDetails.jobTitle}
+- Experience Level: ${resumeData.personalDetails.experienceLevel}
+
+Skills: ${skillsList}
+
+Key Achievements: ${achievementsList}
+
+Languages: ${languagesList}
+
+Please create a 3-4 sentence professional summary that:
+- Highlights key strengths from the skills and achievements listed
+- Reflects the experience level (${resumeData.personalDetails.experienceLevel})
+- Incorporates relevant skills and accomplishments naturally
+- Uses action-oriented language
+- Is tailored for the ${resumeData.personalDetails.jobTitle} position
+- Sounds professional and compelling to recruiters
+- Mentions language skills if they are relevant to the role
+
+Return only the summary text without any additional formatting or explanations.`;
 
   try {
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    return response.text();
+    return response.text().trim();
   } catch (error) {
     console.error('Error generating summary:', error);
-    return getDefaultSummary(personalDetails);
+    return getDefaultSummary(resumeData.personalDetails);
   }
 };
 

@@ -21,9 +21,14 @@ export const SummaryForm = ({ resumeData, updateSummary }: SummaryFormProps) => 
       return;
     }
 
+    if (resumeData.skills.length === 0 && resumeData.achievements.length === 0) {
+      toast.error('Please add some skills and achievements first for a better summary');
+      return;
+    }
+
     setIsGenerating(true);
     try {
-      const summary = await generateExecutiveSummary(resumeData.personalDetails);
+      const summary = await generateExecutiveSummary(resumeData);
       updateSummary(summary);
       toast.success('Summary generated successfully!');
     } catch (error) {

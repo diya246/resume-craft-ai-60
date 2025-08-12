@@ -33,9 +33,9 @@ export const ResumeBuilder = ({ onBack }: ResumeBuilderProps) => {
 
   const steps = [
     { title: 'Personal Details', component: PersonalDetailsForm },
-    { title: 'Summary', component: SummaryForm },
     { title: 'Skills & Achievements', component: SkillsForm },
     { title: 'Education', component: EducationForm },
+    { title: 'Summary', component: SummaryForm },
     { title: 'Preview', component: ResumePreview }
   ];
 
@@ -57,14 +57,14 @@ export const ResumeBuilder = ({ onBack }: ResumeBuilderProps) => {
 
   const canProceed = () => {
     switch (currentStep) {
-      case 0:
+      case 0: // Personal Details
         return resumeData.personalDetails.name && resumeData.personalDetails.jobTitle && resumeData.personalDetails.email;
-      case 1:
-        return resumeData.summary.length > 0;
-      case 2:
-        return resumeData.skills.length > 0;
-      case 3:
-        return resumeData.education.length > 0;
+      case 1: // Skills & Achievements
+        return true; // Optional step
+      case 2: // Education
+        return true; // Optional step
+      case 3: // Summary
+        return true; // Optional step
       default:
         return true;
     }
