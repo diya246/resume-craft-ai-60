@@ -59,8 +59,16 @@ export const calculateATSScore = async (resumeText: string): Promise<ATSScore> =
 
 const analyzeResumeWithAI = async (resumeText: string): Promise<number> => {
   try {
-    // Use Hugging Face transformers for semantic analysis
-    const classifier = await pipeline('text-classification', 'microsoft/DialoGPT-medium');
+    // Use proper embedding model for semantic analysis
+    const embedder = await pipeline('feature-extraction', 'sentence-transformers/all-MiniLM-L6-v2');
+    
+    // Create reference job description embeddings for comparison
+    const jobDescriptionSample = "experienced professional skilled developer team collaboration project management technical expertise";
+    const resumeEmbedding = await embedder(resumeText);
+    const jobEmbedding = await embedder(jobDescriptionSample);
+    
+    // Calculate semantic similarity score
+    const semanticScore = calculateCosineSimilarity(resumeEmbedding.data, jobEmbedding.data) * 100;
     
     // Analyze various aspects of the resume
     const analyses = await Promise.all([
@@ -71,8 +79,11 @@ const analyzeResumeWithAI = async (resumeText: string): Promise<number> => {
       analyzeSkillsMatching(resumeText)
     ]);
     
-    // Weight different factors
-    const weights = [0.25, 0.2, 0.25, 0.15, 0.15];
+    // Include semantic similarity in analysis
+    analyses.push(semanticScore);
+    
+    // Weight different factors (semantic analysis gets 20% weight)
+    const weights = [0.2, 0.15, 0.2, 0.15, 0.1, 0.2];
     const weightedScore = analyses.reduce((sum, score, index) => sum + score * weights[index], 0);
     
     return Math.round(Math.min(100, Math.max(0, weightedScore)));
@@ -80,6 +91,14 @@ const analyzeResumeWithAI = async (resumeText: string): Promise<number> => {
     console.error('AI analysis failed:', error);
     return calculateATSScoreRuleBased(resumeText).score;
   }
+};
+
+// Helper function to calculate cosine similarity between embeddings
+const calculateCosineSimilarity = (vecA: number[], vecB: number[]): number => {
+  const dotProduct = vecA.reduce((sum, val, i) => sum + val * vecB[i], 0);
+  const magnitudeA = Math.sqrt(vecA.reduce((sum, val) => sum + val * val, 0));
+  const magnitudeB = Math.sqrt(vecB.reduce((sum, val) => sum + val * val, 0));
+  return dotProduct / (magnitudeA * magnitudeB);
 };
 
 const analyzeKeywordDensity = async (text: string): Promise<number> => {
