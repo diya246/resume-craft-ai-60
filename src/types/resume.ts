@@ -6,7 +6,6 @@ export interface PersonalDetails {
   linkedin: string;
   github: string;
   experienceLevel: 'junior' | 'mid' | 'senior';
-  profilePhoto?: string;
 }
 
 export interface Achievement {

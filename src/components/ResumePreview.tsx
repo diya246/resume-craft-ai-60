@@ -33,28 +33,17 @@ export const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div id="resume-preview" className="bg-white text-black p-12 min-h-[800px] shadow-lg">
+            <div id="resume-preview" className="bg-white text-black p-8 min-h-[800px] shadow-lg">
               {/* Header */}
-              <div className="border-b-2 border-gray-300 pb-8 mb-8">
+              <div className="border-b-2 border-gray-300 pb-6 mb-6">
                 <div className="flex justify-between items-start">
-                  <div className="flex items-start gap-6">
-                    {resumeData.personalDetails.profilePhoto && (
-                      <div className="flex-shrink-0">
-                        <img
-                          src={resumeData.personalDetails.profilePhoto}
-                          alt="Profile"
-                          className="w-20 h-20 rounded-full object-cover border-2 border-gray-300"
-                        />
-                      </div>
-                    )}
-                    <div>
-                      <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                        {resumeData.personalDetails.name || 'Your Name'}
-                      </h1>
-                      <p className="text-lg text-gray-600">
-                        {resumeData.personalDetails.jobTitle || 'Your Job Title'}
-                      </p>
-                    </div>
+                  <div>
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                      {resumeData.personalDetails.name || 'Your Name'}
+                    </h1>
+                    <p className="text-lg text-gray-600">
+                      {resumeData.personalDetails.jobTitle || 'Your Job Title'}
+                    </p>
                   </div>
                   <div className="text-right text-sm text-gray-600 space-y-1">
                     {resumeData.personalDetails.email && (
@@ -87,21 +76,20 @@ export const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
 
               {/* Executive Summary */}
               {resumeData.summary && (
-                <div className="mb-8">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b-2 border-gray-300 pb-2">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-1">
                     Executive Summary
                   </h2>
                   <p className="text-gray-700 leading-relaxed">
                     {resumeData.summary}
                   </p>
-                  <hr className="mt-6 border-gray-200" />
                 </div>
               )}
 
               {/* Skills */}
               {resumeData.skills.length > 0 && (
-                <div className="mb-8">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b-2 border-gray-300 pb-2">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-1">
                     Technical Skills
                   </h2>
                   <div className="flex flex-wrap gap-2">
@@ -114,34 +102,32 @@ export const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
                       </span>
                     ))}
                   </div>
-                  <hr className="mt-6 border-gray-200" />
                 </div>
               )}
 
               {/* Achievements */}
               {resumeData.achievements.length > 0 && (
-                <div className="mb-8">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b-2 border-gray-300 pb-2">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-1">
                     Key Achievements
                   </h2>
-                  <ul className="space-y-4">
+                  <ul className="space-y-3">
                     {resumeData.achievements.map((achievement) => (
                       <li key={achievement.id}>
                         <h3 className="font-semibold text-gray-900">{achievement.title}</h3>
-                        <p className="text-gray-700 text-sm leading-relaxed mt-1">
+                        <p className="text-gray-700 text-sm leading-relaxed">
                           {achievement.description}
                         </p>
                       </li>
                     ))}
                   </ul>
-                  <hr className="mt-6 border-gray-200" />
                 </div>
               )}
 
               {/* Languages */}
               {resumeData.languages.length > 0 && (
-                <div className="mb-8">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b-2 border-gray-300 pb-2">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-1">
                     Languages
                   </h2>
                   <div className="flex flex-wrap gap-4">
@@ -151,17 +137,16 @@ export const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
                       </span>
                     ))}
                   </div>
-                  <hr className="mt-6 border-gray-200" />
                 </div>
               )}
 
               {/* Education */}
               {resumeData.education.length > 0 && (
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b-2 border-gray-300 pb-2">
+                  <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-1">
                     Education
                   </h2>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {resumeData.education.map((edu) => (
                       <div key={edu.id}>
                         <div className="flex justify-between items-start">

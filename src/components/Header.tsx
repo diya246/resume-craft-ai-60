@@ -10,7 +10,7 @@ export const Header = () => {
               <Brain className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">ResuMate</h1>
+              <h1 className="text-xl font-bold text-foreground">ResumeCraft AI</h1>
               <p className="text-sm text-muted-foreground">Professional AI Resume Builder</p>
             </div>
           </div>
